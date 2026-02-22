@@ -2,6 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "perfsonar-archive.fullname" . }}-opensearch-node
+  labels:
+    app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
   selector:
     app: opensearch-node
@@ -12,3 +14,4 @@ spec:
     - name: transport
       port: 9600
       targetPort: 9600
+  type: {{ .Values.opensearchNode.service.type }}

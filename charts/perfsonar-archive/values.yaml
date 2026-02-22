@@ -7,44 +7,78 @@ opensearchNode:
     repository: docker-proxy.grena.ge/perfsonar-archive
     tag: 5.2
     pullPolicy: Always
-
   opensearchVersion: "2.19.4"
   initialAdminPassword: "perfSONAR123!"
-
   persistence:
     enabled: true
     size: 10Gi
     storageClassName: ""
-
-  affinity:
-    podAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchExpressions:
-              - key: app.kubernetes.io/component
-                operator: In
-                values:
-                  - perfsonar
-              - key: app.kubernetes.io/instance
-                operator: In
-                values:
-                  - myRelease
-          topologyKey: kubernetes.io/hostname
+    accessMode: ReadWriteOnce
+  resources:
+    requests:
+      memory: 10Gi
+      cpu: 500m
+    limits:
+      memory: 10Gi
+  updateStrategy:
+    type: OnDelete
+  affinity: {}
+  tolerations: []
+  service:
+    type: ClusterIP
 
 logstash:
   image:
     repository: ghcr.io/perfsonar/logstash
     tag: 5.2.0
     pullPolicy: Always
-
   logstashVersion: "8.17.3"
   opensearch_output_user: "pscheduler_logstash"
   opensearch_output_password: ""
+  strategy:
+    type: Recreate
+  resources:
+    requests:
+      memory: 1.5Gi
+      cpu: 250m
+    limits:
+      memory: 1.5Gi
+  affinity: {}
+  tolerations: []
+  service:
+    type: ClusterIP
 
 opensearchDashboards:
   image:
     repository: docker-proxy.grena.ge/perfsonar-dashboards
     tag: 5.2
     pullPolicy: Always
-
   opensearchVersion: "2.19.4"
+  # -- Shared volume between the Opensearch container and the Dashboards container
+  persistence:
+    enabled: true
+    size: 10Mi
+    storageClassName: ""
+    accessMode: ReadWriteOnce
+  resources:
+    requests:
+      memory: 1.5Gi
+      cpu: 250m
+    limits:
+      memory: 1.5Gi
+  strategy:
+    type: Recreate
+  affinity: {}
+  tolerations: []
+  service:
+    type: LoadBalancer
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts:
+      - host: opensearch-dashboards.local
+        paths:
+          - path: /
+            pathType: Prefix
+    tls: []

@@ -4,4 +4,4 @@
   echo http://$NODE_IP:$NODE_PORT
 
 2. To get the admin password for OpenSearch run:
-   kubectl exec -it statefulset/{{ include "perfsonar-archive.fullname" . }}-opensearch-node -- grep -w admin /usr/lib/perfsonar/archive/auth_setup.out
+   kubectl exec --namespace {{ .Release.Namespace }} -it statefulset/{{ include "perfsonar-archive.fullname" . }}-opensearch-node -- grep -w admin /usr/lib/perfsonar/archive/auth_setup.out

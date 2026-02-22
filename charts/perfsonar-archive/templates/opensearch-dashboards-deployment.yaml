@@ -2,8 +2,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "perfsonar-archive.fullname" . }}-opensearch-dashboards
+  labels:
+    app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
   replicas: 1
+  {{- with .Values.opensearchDashboards.strategy }}
+  strategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   selector:
     matchLabels:
       app: opensearch-dashboards
@@ -11,6 +17,7 @@ spec:
     metadata:
       labels:
         app: opensearch-dashboards
+        app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       containers:
         - name: opensearch-dashboards
@@ -23,6 +30,10 @@ spec:
               value: "0.0.0.0"
           ports:
             - containerPort: 5601
+          {{- with .Values.opensearchDashboards.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - name: opensearch-shared
               mountPath: /usr/lib/perfsonar/archive/
@@ -30,3 +41,11 @@ spec:
         - name: opensearch-shared
           persistentVolumeClaim:
             claimName: {{ include "perfsonar-archive.fullname" . }}-opensearch-shared
+      {{- with .Values.opensearchDashboards.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.opensearchDashboards.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

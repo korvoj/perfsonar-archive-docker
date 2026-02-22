@@ -1,11 +1,17 @@
+{{- if .Values.opensearchDashboards.persistence.enabled }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ include "perfsonar-archive.fullname" . }}-opensearch-shared
+  labels:
+    app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
   accessModes:
-    - ReadWriteMany
-  storageClassName: {{ .Values.opensearchNode.persistence.storageClass }}
+    - {{ .Values.opensearchDashboards.persistence.accessMode | quote }}
+  {{- if .Values.opensearchDashboards.persistence.storageClass }}
+  storageClassName: {{ .Values.opensearchDashboards.persistence.storageClass | quote }}
+  {{- end }}
   resources:
     requests:
-      storage: 10Mi
+      storage: {{ .Values.opensearchDashboards.persistence.size | quote }}
+{{- end }}
