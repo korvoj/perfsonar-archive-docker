@@ -21,6 +21,12 @@ The command deploys perfSONAR archive on the Kubernetes cluster with the default
 
 > **Tip**: List all releases using `helm list`
 
+If you need shorter generated Kubernetes resource names, for example to avoid StatefulSet name or label length limits, set `fullnameOverride` or `nameOverride`:
+
+```bash
+helm install perfsonar-archive . --set fullnameOverride=psa
+```
+
 ## Uninstalling the Chart
 
 To uninstall/delete the `perfsonar-archive` deployment:
@@ -39,6 +45,8 @@ The following table lists the configurable parameters of the perfSONAR Archive c
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
+| `nameOverride` | Overrides the chart name portion used in generated resource names. | `""` |
+| `fullnameOverride` | Fully overrides generated resource names. Useful when release names are long. | `""` |
 | `perfsonarVersion` | The version of perfSONAR components to be used by the downloader job. | `5.2.0` |
 
 ### Downloader Parameters

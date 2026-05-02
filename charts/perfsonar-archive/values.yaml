@@ -1,4 +1,7 @@
 # Global settings
+nameOverride: ""
+fullnameOverride: ""
+
 global:
   perfsonarVersion: "5.2.0"
 
