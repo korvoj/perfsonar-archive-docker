@@ -77,7 +77,7 @@ opensearchDashboards:
     type: LoadBalancer
     port: 5601
   ingress:
-    enabled: false
+    enabled: true
     className: ""
     annotations: {}
     hosts:
@@ -108,10 +108,13 @@ grafana:
     type: ClusterIP
     port: 3000
     targetPort: 3000
+  affinity: {}
+  tolerations: []
   ingress:
-    enabled: false
+    enabled: true
     className: ""
-    annotations: {}
+    annotations:
+      nginx.ingress.kubernetes.io/app-root: /grafana
     hosts:
       - host: grafana.local
         paths:

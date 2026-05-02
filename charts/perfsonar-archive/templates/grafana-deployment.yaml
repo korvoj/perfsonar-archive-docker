@@ -44,4 +44,12 @@ spec:
         - name: opensearch-shared
           persistentVolumeClaim:
             claimName: {{ include "perfsonar-archive.fullname" . }}-opensearch-shared
+      {{- with .Values.grafana.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.grafana.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
 {{- end }}
