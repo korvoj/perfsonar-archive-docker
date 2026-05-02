@@ -57,7 +57,7 @@ opensearchDashboards:
   # -- Shared volume between the Opensearch container and the Dashboards container
   persistence:
     enabled: true
-    size: 10Mi
+    size: 250Mi
     storageClassName: ""
     accessMode: ReadWriteOnce
   resources:
@@ -105,6 +105,16 @@ grafana:
     type: ClusterIP
     port: 3000
     targetPort: 3000
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts:
+      - host: grafana.local
+        paths:
+          - path: /grafana
+            pathType: Prefix
+    tls: []
 
 
 apache:
