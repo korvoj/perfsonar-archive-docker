@@ -50,6 +50,16 @@ logstash:
   tolerations: []
   service:
     type: ClusterIP
+  ingress:
+    enabled: true
+    className: ""
+    annotations: {}
+    hosts:
+      - host: logstash.local
+        paths:
+          - path: /
+            pathType: Prefix
+    tls: []
 
 opensearchDashboards:
   image:

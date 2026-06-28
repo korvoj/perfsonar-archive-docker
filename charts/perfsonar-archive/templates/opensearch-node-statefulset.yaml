@@ -30,9 +30,13 @@ spec:
             - name: DISABLE_INSTALL_DEMO_CONFIG
               value: "true"
             - name: cluster.name
-              value: "opensearch-cluster"
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
             - name: node.name
-              value: "opensearch-node"
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
             - name: discovery.type
               value: "single-node"
             - name: bootstrap.memory_lock
