@@ -14,15 +14,15 @@ downloader:
   persistence:
     archive:
       size: 1Gi
-      accessMode: ReadWriteMany
+      accessMode: ReadWriteOnce
 
     logstash:
       size: 1Gi
-      accessMode: ReadWriteMany
+      accessMode: ReadWriteOnce
 
     dashboards:
       size: 1Gi
-      accessMode: ReadWriteMany
+      accessMode: ReadWriteOnce
 
 opensearch:
   enabled: true
@@ -65,7 +65,7 @@ opensearch:
     port: 9200
   sharedConfig:
     size: 1Gi
-    accessModes: ["ReadWriteMany"]
+    accessModes: ["ReadWriteOnce"]
 
 logstash:
   enabled: true
